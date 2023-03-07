@@ -25,10 +25,14 @@
     "parcel-bundler": "^1.12.5"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.0",
     "path": "^0.12.7",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "slugify": "^1.6.5",
+    "validator": "^13.9.0"
   }
 }

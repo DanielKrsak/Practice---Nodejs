@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const AppFeatures = require("../utils/appFeatures");
+const User = require("../models/userModel");
 
 exports.getAll = (Model) => {
   return catchAsync(async (req, res, next) => {
@@ -15,7 +16,22 @@ exports.getAll = (Model) => {
       status: "success",
       results: doc.length,
       requestedAt: req.requestedAt,
-      doc,
+      data: {
+        data: doc,
+      },
+    });
+  });
+};
+
+exports.createOne = (Model) => {
+  return catchAsync(async (req, res, next) => {
+    const doc = await Model.create(req.body);
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        data: doc,
+      },
     });
   });
 };
