@@ -63,6 +63,10 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    review: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Review",
+    },
   },
   {
     toJSON: { virtuals: true },
