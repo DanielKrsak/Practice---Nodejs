@@ -9,6 +9,15 @@ const userSchema = new mongoose.Schema(
       trim: true,
       required: [true, "Please tell us your name."],
     },
+    role: {
+      type: String,
+      enum: {
+        values: ["user", "guide", "lead-guide", "admin"],
+        message:
+          "Invalid role. Please select one of the following user, guide, lead-guide, admin",
+      },
+      default: "user",
+    },
     photo: String,
     email: {
       type: String,
@@ -20,6 +29,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       minlength: [8, "Password must be at least 8 characters long."],
       required: [true, "Please provide your password."],
+      select: false,
     },
     passwordConfirm: {
       type: String,
@@ -31,6 +41,7 @@ const userSchema = new mongoose.Schema(
       },
       required: [true, "Please confirm your password."],
     },
+    passwordChangeAt: Date,
   },
   {
     toJSON: { virtuals: true },
@@ -46,6 +57,21 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
+
+userSchema.methods.verifyPassword = async function (
+  candidatePassword,
+  password
+) {
+  return await bcrypt.compare(candidatePassword, password);
+};
+
+userSchema.methods.passwordChangedAfter = function (JWT) {
+  if (this.passwordChangeAt) {
+    return JWT < parseInt(this.passwordChangeAt.getTime() / 1000, 10);
+  }
+
+  return false;
+};
 
 const User = mongoose.model("User", userSchema);
 

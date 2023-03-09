@@ -10,5 +10,6 @@ router
   .post(userController.createUser);
 
 router.route("/signin").post(authController.signIn);
+router.route("/login").post(authController.login);
 
 module.exports = router;
